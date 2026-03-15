@@ -1,4 +1,5 @@
 import axios from 'axios'
+import { getToken, clearToken } from './auth'
 
 // 创建axios实例
 const service = axios.create({
@@ -9,9 +10,13 @@ const service = axios.create({
   }
 })
 
-// 请求拦截器
+// 请求拦截器 — attach auth token
 service.interceptors.request.use(
   config => {
+    const token = getToken()
+    if (token) {
+      config.headers.Authorization = `Bearer ${token}`
+    }
     return config
   },
   error => {
@@ -35,6 +40,13 @@ service.interceptors.response.use(
   },
   error => {
     console.error('Response error:', error)
+    
+    // Handle 401 — token expired or invalid
+    if (error.response && error.response.status === 401) {
+      clearToken()
+      window.location.href = '/login'
+      return Promise.reject(error)
+    }
     
     // 处理超时
     if (error.code === 'ECONNABORTED' && error.message.includes('timeout')) {

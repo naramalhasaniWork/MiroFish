@@ -4,6 +4,7 @@
 """
 
 import os
+import secrets
 from dotenv import load_dotenv
 
 # 加载项目根目录的 .env 文件
@@ -21,8 +22,8 @@ class Config:
     """Flask配置类"""
     
     # Flask配置
-    SECRET_KEY = os.environ.get('SECRET_KEY', 'mirofish-secret-key')
-    DEBUG = os.environ.get('FLASK_DEBUG', 'True').lower() == 'true'
+    SECRET_KEY = os.environ.get('SECRET_KEY') or secrets.token_hex(32)
+    DEBUG = os.environ.get('FLASK_DEBUG', 'False').lower() == 'true'
     
     # JSON配置 - 禁用ASCII转义，让中文直接显示（而不是 \uXXXX 格式）
     JSON_AS_ASCII = False
@@ -33,6 +34,10 @@ class Config:
     LLM_MODEL_NAME = os.environ.get('LLM_MODEL_NAME', 'gpt-4o-mini')
     LLM_REFERER = os.environ.get('LLM_REFERER', 'https://github.com/naramalhasaniWork/MiroFish')
     LLM_TITLE = os.environ.get('LLM_TITLE', 'MiroFish')
+    
+    # App password (required to access the app)
+    APP_PASSWORD = os.environ.get('APP_PASSWORD')
+    AUTH_TOKEN_MAX_AGE = int(os.environ.get('AUTH_TOKEN_MAX_AGE', '86400'))  # 24h
     
     # Zep配置
     ZEP_API_KEY = os.environ.get('ZEP_API_KEY')
