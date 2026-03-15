@@ -27,10 +27,12 @@ class Config:
     # JSON配置 - 禁用ASCII转义，让中文直接显示（而不是 \uXXXX 格式）
     JSON_AS_ASCII = False
     
-    # LLM配置（统一使用OpenAI格式）
+    # LLM配置（统一使用OpenAI格式，兼容OpenRouter等代理）
     LLM_API_KEY = os.environ.get('LLM_API_KEY')
     LLM_BASE_URL = os.environ.get('LLM_BASE_URL', 'https://api.openai.com/v1')
     LLM_MODEL_NAME = os.environ.get('LLM_MODEL_NAME', 'gpt-4o-mini')
+    LLM_REFERER = os.environ.get('LLM_REFERER', 'https://github.com/naramalhasaniWork/MiroFish')
+    LLM_TITLE = os.environ.get('LLM_TITLE', 'MiroFish')
     
     # Zep配置
     ZEP_API_KEY = os.environ.get('ZEP_API_KEY')

@@ -11,6 +11,16 @@ from openai import OpenAI
 from ..config import Config
 
 
+def _build_extra_headers() -> dict:
+    """Build extra headers for OpenRouter and similar proxies."""
+    headers = {}
+    if Config.LLM_REFERER:
+        headers["HTTP-Referer"] = Config.LLM_REFERER
+    if Config.LLM_TITLE:
+        headers["X-Title"] = Config.LLM_TITLE
+    return headers
+
+
 class LLMClient:
     """LLM客户端"""
     
@@ -29,7 +39,8 @@ class LLMClient:
         
         self.client = OpenAI(
             api_key=self.api_key,
-            base_url=self.base_url
+            base_url=self.base_url,
+            default_headers=_build_extra_headers()
         )
     
     def chat(

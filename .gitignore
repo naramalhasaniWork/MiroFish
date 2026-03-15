@@ -9,6 +9,7 @@ Thumbs.db
 .env.development
 .env.test
 .env.production
+sensative.md
 
 # Python
 __pycache__/
